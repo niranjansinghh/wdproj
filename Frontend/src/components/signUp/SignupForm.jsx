@@ -4,18 +4,19 @@ import { useMutation } from '@apollo/client';
 import { SIGNUP_MUTATION } from '../mutations'; // Adjust the import path as necessary
 
 const SignupForm = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signup] = useMutation(SIGNUP_MUTATION);
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert('Email and password are required.');
+    if (!username || !email || !password) {
+      alert('Username, email, and password are required.');
       return;
     }
     try {
-      const { data } = await signup({ variables: { email, password } });
+      const { data } = await signup({ variables: { username, email, password } });
       console.log('Signup successful:', data);
       alert('Signup successful!');
     } catch (error) {
@@ -29,6 +30,19 @@ const SignupForm = () => {
       <div className="form-box">
         <h2>Sign Up</h2>
         <form onSubmit={handleSignup}>
+          {/* Username Field */}
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+              required
+            />
+          </div>
           {/* Email Field */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
