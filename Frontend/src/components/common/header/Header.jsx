@@ -1,13 +1,27 @@
 import React, { useState } from "react";
 import "./header.css"; // Ensure this file contains the correct styles
 import { nav } from "../../data/Data";
-import { Link} from "react-router-dom";
-import { useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [navList, setNavList] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false); // State for dropdown visibility
+  const [showPopup, setShowPopup] = useState(false); // State for popup visibility
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear JWT cache data
+    localStorage.removeItem("jwtToken");
+
+    // Show popup message
+    setShowPopup(true);
+
+    // Hide popup message after 3 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+      navigate("/login"); // Redirect to login page
+    }, 3000);
+  };
 
   return (
     <>
@@ -49,7 +63,9 @@ const Header = () => {
                     </button>
                   </li>
                   <li>
-                    <button className="btn1">Log out</button>
+                    <button className="btn1" onClick={handleLogout}>
+                      Log out
+                    </button>
                   </li>
                 </>
               )}
@@ -91,12 +107,19 @@ const Header = () => {
             )}
 
             {/* Log Out Button */}
-            <button className="btn1">
+            <button className="btn1" onClick={handleLogout}>
               <i className="fa fa-sign-out"></i> Log out
             </button>
           </div>
         </div>
       </header>
+
+      {/* Popup Message */}
+      {showPopup && (
+        <div className="popup">
+          <p>Logout successful</p>
+        </div>
+      )}
     </>
   );
 };
