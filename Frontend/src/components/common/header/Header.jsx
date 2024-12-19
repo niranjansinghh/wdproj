@@ -15,11 +15,12 @@ const Header = () => {
 
     // Show popup message
     setShowPopup(true);
+    alert("logged out")
 
     // Hide popup message after 3 seconds
     setTimeout(() => {
       setShowPopup(false);
-      navigate("/login"); // Redirect to login page
+      navigate("/"); // Redirect to login page
     }, 3000);
   };
 
